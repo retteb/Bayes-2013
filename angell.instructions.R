@@ -36,8 +36,8 @@ setwd("/Users/johanneskarreth/R/Bayes/angell")
 #  }
 #  
 #  alpha~dnorm(0, .01)
-#  beta1~dunif(-100000,100000)
-#  beta2~dunif(-100000,100000)
+#  beta1~dunif(-100,100)
+#  beta2~dunif(-100,100)
 #  tau~dgamma(.01,.01)
 #  }
 
@@ -51,8 +51,8 @@ angell.model.jags <- function()  {
  }
  
  alpha~dnorm(0, .01)
- beta1~dunif(-100000,100000)
- beta2~dunif(-100000,100000)
+ beta1~dunif(-100,100)
+ beta2~dunif(-100,100)
  tau~dgamma(.01,.01)
 
 }
@@ -163,11 +163,10 @@ ggs_running(angellfit.gg)
 ## Yet another option with a similar look, and many diagnostics printed into one file: the mcmcplots package
 ## If you like the look of ggplot2, check out the package "mcmcplots":
 library(mcmcplots) 
-denplot(angellfit.mcmc))
-denplot(angellfit.mcmc, parms = c("alpha", "beta1", "beta2"))
-traplot(angellfit.mcmc, parms = c("alpha", "beta1", "beta2"))
-denplot(angellfit.mcmc, parms = c("alpha", "beta1", "beta2", auto.layout = TRUE))
-caterplot(angellfit.mcmc, parms = c("alpha", "beta1", "beta2"), labels = c("Intercept", "Heterogeneity", "Mobility"))
+denplot(angellfit.mcmc, parms = c('b.size', collapse = FALSE, auto.layout = TRUE)) 
+caterplot(angellfit.mcmc, parms = c('b.size', 'b.female', 'b.minority', 'b.ses', auto.layout = TRUE))
+traplot(angellfit.mcmc, parms = c('b.size', 'b.female', 'b.minority', 'b.ses', auto.layout = TRUE))
+denplot(angellfit.mcmc, parms = c('b.size', 'b.female', 'b.minority', 'b.ses', auto.layout = TRUE))
 ## The following command prints diagnostic plots into a (temporary) HTML file for quick viewing:
 mcmcplot(angellfit.mcmc)
 
@@ -186,13 +185,13 @@ plot(angellfit)
 ## etc.
 
 ## This will create the following files in your working directory:
-# /Users/johanneskarreth/R/CODAchain1.txt
-# /Users/johanneskarreth/R/CODAchain2.txt
-# /Users/johanneskarreth/R/CODAindex.txt
-# /Users/johanneskarreth/R/jagsdata.txt
-# /Users/johanneskarreth/R/jagsinits1.txt
-# /Users/johanneskarreth/R/jagsinits2.txt
-# /Users/johanneskarreth/R/jagsscript.txt
+/Users/johanneskarreth/R/CODAchain1.txt
+/Users/johanneskarreth/R/CODAchain2.txt
+/Users/johanneskarreth/R/CODAindex.txt
+/Users/johanneskarreth/R/jagsdata.txt
+/Users/johanneskarreth/R/jagsinits1.txt
+/Users/johanneskarreth/R/jagsinits2.txt
+/Users/johanneskarreth/R/jagsscript.txt
 
 ## ... which can then be analyzed using BOA
 library(boa)
