@@ -163,10 +163,10 @@ ggs_running(angellfit.gg)
 ## Yet another option with a similar look, and many diagnostics printed into one file: the mcmcplots package
 ## If you like the look of ggplot2, check out the package "mcmcplots":
 library(mcmcplots) 
-denplot(angellfit.mcmc, parms = c('b.size', collapse = FALSE, auto.layout = TRUE)) 
-caterplot(angellfit.mcmc, parms = c('b.size', 'b.female', 'b.minority', 'b.ses', auto.layout = TRUE))
-traplot(angellfit.mcmc, parms = c('b.size', 'b.female', 'b.minority', 'b.ses', auto.layout = TRUE))
-denplot(angellfit.mcmc, parms = c('b.size', 'b.female', 'b.minority', 'b.ses', auto.layout = TRUE))
+denplot(angellfit.mcmc, parms = c("alpha", "beta1", "beta2"))
+traplot(angellfit.mcmc, parms = c("alpha", "beta1", "beta2"))
+caterplot(angellfit.mcmc)
+caterplot(angellfit.mcmc, parms = c("alpha", "beta1", "beta2"), labels = c("Intercept", "Heterogeneity", "Mobility"))
 ## The following command prints diagnostic plots into a (temporary) HTML file for quick viewing:
 mcmcplot(angellfit.mcmc)
 
@@ -178,20 +178,20 @@ superdiag(angellfit.mcmc, burnin = 100)
 ## If we want to examine the Coda files via Boa or Coda, use the function jags2:
 
 angell.params <- c("alpha", "beta1", "beta2")
-angellfit <- jags2(data=angell.data, inits=angell.inits, angell.params, n.iter=5000, model.file=angell.model.jags, clearWD = FALSE)
+angellfit <- jags2(data=angell.data, inits=angell.inits, angell.params, n.chains=2, n.iter=5000, model.file=angell.model.jags, clearWD = FALSE)
 
 print(angellfit)
 plot(angellfit)
 ## etc.
 
 ## This will create the following files in your working directory:
-/Users/johanneskarreth/R/CODAchain1.txt
-/Users/johanneskarreth/R/CODAchain2.txt
-/Users/johanneskarreth/R/CODAindex.txt
-/Users/johanneskarreth/R/jagsdata.txt
-/Users/johanneskarreth/R/jagsinits1.txt
-/Users/johanneskarreth/R/jagsinits2.txt
-/Users/johanneskarreth/R/jagsscript.txt
+# /Users/johanneskarreth/R/CODAchain1.txt
+# /Users/johanneskarreth/R/CODAchain2.txt
+# /Users/johanneskarreth/R/CODAindex.txt
+# /Users/johanneskarreth/R/jagsdata.txt
+# /Users/johanneskarreth/R/jagsinits1.txt
+# /Users/johanneskarreth/R/jagsinits2.txt
+# /Users/johanneskarreth/R/jagsscript.txt
 
 ## ... which can then be analyzed using BOA
 library(boa)
