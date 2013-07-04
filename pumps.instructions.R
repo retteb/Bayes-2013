@@ -35,7 +35,7 @@ setwd("~/R/Bayes/pumps")
 
 ## Model parameters
 
-pumps.params <- c("theta", "alpha", "beta", "lambda", "t", "x")
+pumps.params <- c("theta")
 
 ## Run JAGS
 
