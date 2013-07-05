@@ -91,7 +91,7 @@ angellfit <- jags(data=angell.data, inits=angell.inits, angell.params, n.chains=
 angellfit <- jags(data=angell.data, inits=NULL, angell.params, n.chains=2, n.iter=9000, n.burnin=1000, model.file= angell.model.jags)
 
 ## Note: If you had saved the model file in your working directory, put the file name in quotation marks:
-# angellfit <- jags(data=angell.data, inits=NULL, angell.params, n.chains=2, n.iter=9000, n.burnin=1000, model.file= angell.model.jags)
+# angellfit <- jags(data=angell.data, inits=NULL, angell.params, n.chains=2, n.iter=9000, n.burnin=1000, model.file="angell.model.jags")
 
 ## Update your model if necessary - e.g. if there is no/little convergence:
 
