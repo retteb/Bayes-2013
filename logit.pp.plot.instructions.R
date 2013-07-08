@@ -6,7 +6,7 @@
 
 ## Johannes Karreth
 ## johannes.karreth@colorado.edu
-## 7/9/2013
+## 7/8/2013
 
 ## Fit your Bayesian model, monitor the coefficients (in this example, named b[]) 
 ## and the cut points (in this example, named theta[])
@@ -33,7 +33,7 @@ turnout.out <- turnout.fit$BUGSoutput$summary
 
 ## OR: WINBUGS/JAGS users, read in your coda files.
 turnout.out <- rbind(read.coda("CODAchain1.txt", "CODAindex.txt"), 
-  read.coda("CODAchain2.txt", "CODAindex.txt"))
+	read.coda("CODAchain2.txt", "CODAindex.txt"))
 	
 ## Define vector of predicted probabilities on observed data points
 ## Rows: all rows containing p. By hand:
@@ -170,9 +170,15 @@ xyplot(mean.turnout.pp.age.s ~ new.age, ylim=c(0,1), xlab="Age", ylab="Pr(Voting
 ######################
 
 ## Dataframe for plotting
-
 plot.dat <- data.frame(south = as.factor(c(rep(1, length(new.age)), rep(0, length(new.age)))), new.age = c(new.age, new.age), mean.turnout.pp = c(mean.turnout.pp.age.s, mean.turnout.pp.age.n), turnout.lower = c(turnout.s.ci[1, ], turnout.n.ci[1, ]), turnout.upper = c(turnout.s.ci[2, ], turnout.n.ci[2, ]))
 
+## Make lines and ribbons separately
 p <- ggplot(dat = plot.dat, aes(x = new.age, y = mean.turnout.pp, group = south)) + geom_line(aes(colour = south))
 p <- p + geom_ribbon(aes(ymin = turnout.lower, ymax = turnout.upper, fill = south), alpha = 0.2)
-p <- p + xlab("Age") + ylab("Pr(Voting)") + theme_bw()
+p <- p + xlab("Age") + ylab("Pr(Voting)") + theme_bw() + scale_colour_manual(values=c("blue", "red")) + scale_fill_manual(values=c("blue", "red"))
+p <- p + theme(legend.position = "none") + annotate("text", x = 30, y = 0.8, label = "Rest of US", colour = "blue") + annotate("text", x = 60, y = 0.5, label = "South", colour = "red")
+
+## Simpler: use geom_smooth()
+p2 <- ggplot(dat = plot.dat, aes(x = new.age, y = mean.turnout.pp, group = south)) + geom_smooth(aes(x = new.age, ymin = turnout.lower, ymax = turnout.upper, fill = south, colour = south), stat = "identity")
+p2 <- p2 + xlab("Age") + ylab("Pr(Voting)") + theme_bw() + scale_colour_manual(values=c("blue", "red")) + scale_fill_manual(values=c("blue", "red"))
+p2 <- p2 + theme(legend.position = "none") + annotate("text", x = 30, y = 0.8, label = "Rest of US", colour = "blue") + annotate("text", x = 60, y = 0.5, label = "South", colour = "red")
