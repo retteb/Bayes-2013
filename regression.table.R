@@ -5,9 +5,17 @@
 
 ## Johannes Karreth
 ## johannes.karreth@colorado.edu
-## 7/6/2013
+## 7/11/2013
 
-## if angellfit is your R2jags/R2WinBUGS output object
+## if angell.fit is your R2jags/R2WinBUGS output object
+
+angell.fit$BUGSoutput$summary[, c(1, 2, 3, 7)]
+library(xtable)
+regtable1 <- xtable(angell.fit$BUGSoutput$summary[, c(1, 2, 3, 7)])
+print(regtable1, type = "latex")
+print(regtable1, type = "html")
+
+## Another option:
 ## use John Baumgartner's jagstools package:
 ## http://johnbaumgartner.wordpress.com/2012/06/07/r-functions-to-filter-rjags-results/
 
