@@ -42,9 +42,13 @@ turnout.out <- rbind(read.coda("CODAchain1.txt", "CODAindex.txt"),
 ## grep("p[",) pulls all columns that start with p[
 p <- turnout.out[, grep("p[", colnames(turnout.out), fixed=T)]
 
+## If you want to plot mean predicted observed probabilities against a covariate,
+## collapse p to the mean of all iterations
+p.mean <- apply(p, 2, mean)
+
 ## Plot predicted probability (of y=1) against *observed* values of age \
 ## (most likely an ugly plot, b/c we have several y(x_i))
-plot(p[1] ~ turnout.dat.dat$age, xlim = c(min(turnout.dat.dat$age), max(turnout.dat.dat$age)))
+plot(p.mean ~ turnout.dat.dat$age, xlim = c(min(turnout.dat.dat$age), max(turnout.dat.dat$age)))
 
 #################################################################
 ######### SECOND, OUT-OF-SAMPLE PREDICTED PROBABILITIES, ########
