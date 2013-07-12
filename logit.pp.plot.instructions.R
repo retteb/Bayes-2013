@@ -29,7 +29,9 @@ turnout.dat <- as.data.frame(cbind(y, educ, age, south, govelec, closing))
 ## But be sure to monitor individual predicted probabilities (if you want to plot them)
 
 ## R2WINBUGS/R2JAGS USERS, extract the posterior distributions from your jags/bugs object:
-turnout.out <- turnout.fit$BUGSoutput$summary
+turnout.mcmc <- as.mcmc(turnout.fit)
+turnout.mat <- as.matrix(turnout.mcmc)
+turnout.out <- as.data.frame(turnout.mat)
 
 ## OR: WINBUGS/JAGS users, read in your coda files.
 turnout.out <- rbind(read.coda("CODAchain1.txt", "CODAindex.txt"), 
