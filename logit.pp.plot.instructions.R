@@ -6,7 +6,7 @@
 
 ## Johannes Karreth
 ## johannes.karreth@colorado.edu
-## 7/8/2013
+## 7/9/2013
 
 ## Fit your Bayesian model, monitor the coefficients (in this example, named b[]) 
 ## and the cut points (in this example, named theta[])
@@ -35,17 +35,14 @@ turnout.out <- turnout.fit$BUGSoutput$summary
 turnout.out <- rbind(read.coda("CODAchain1.txt", "CODAindex.txt"), 
 	read.coda("CODAchain2.txt", "CODAindex.txt"))
 	
-## Define vector of predicted probabilities on observed data points
-## Rows: all rows containing p. By hand:
-p <- turnout.out[8:3007, 2]
-## Smarter:
-## Define vectors with the values of the predicted probabilities (pulled from the coda files)
+## Define vectors with the values of the predicted probabilities (pulled from the coda files or your mcmc list)
+## This assumes that you used p in logit(p[i]) in your model
 ## grep("p[",) pulls all columns that start with p[
 p <- turnout.out[, grep("p[", colnames(turnout.out), fixed=T)]
 
 ## Plot predicted probability (of y=1) against *observed* values of age \
 ## (most likely an ugly plot, b/c we have several y(x_i))
-plot(p[1]~turnout.dat.dat$age,xlim=c(min(turnout.dat.dat$age), max(turnout.dat.dat$age)))
+plot(p[1] ~ turnout.dat.dat$age, xlim = c(min(turnout.dat.dat$age), max(turnout.dat.dat$age)))
 
 #################################################################
 ######### SECOND, OUT-OF-SAMPLE PREDICTED PROBABILITIES, ########
