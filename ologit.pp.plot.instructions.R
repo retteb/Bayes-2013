@@ -100,11 +100,11 @@ pred.cats <- sapply(prob.list, function(x)apply(x, 1, which.max))
 
 ## % correctly predicted: average # of simulations where pred.cats = observed outcome
 ## Here, dat is the dataframe of the observed data, and interact is the observed DV
-pcp <- apply(pred.cats, 2, function(x)mean(x == as.numeric(dat$interact)))
+pcp <- apply(pred.cats, 2, function(x)mean(x == as.numeric(hw5.dat$interact)))
 
 ## PMC: percentage of observations in the modal category of the observed data
 ## This would be the ``naive'' guess in a null model - simply predict the modal category
-pmc <- max(table(as.numeric(dat$interact))/sum(table(as.numeric(dat$interact))))
+pmc <- max(table(as.numeric(dat$interact))/sum(table(as.numeric(hw5.dat$interact))))
 
 ## PRE is defined as \frac{PCP - PMC}{1 - PMC}, so use this formula
 pre <- (pcp - pmc)/(1-pmc)
