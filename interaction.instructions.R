@@ -71,20 +71,21 @@ int.sim <- matrix(rep(NA, nrow(int.mcmc.dat)*length(x2.sim)), nrow = nrow(int.mc
 for(i in 1:length(x2.sim)){
   int.sim[, i] <- int.mcmc.dat$beta1 + int.mcmc.dat$beta3 * x2.sim[i]
 }
+
 bayes.c.eff.mean <- apply(int.sim, 2, mean)
-bayes.c.eff.sd <- apply(int.sim, 2, sd)
+bayes.c.eff.lower <- apply(int.sim, 2, function(x) quantile(x, probs = c(0.025)))
+bayes.c.eff.upper <- apply(int.sim, 2, function(x) quantile(x, probs = c(0.975)))
 
 ## Frequentist
 freq.c.eff.pe <- coef(f.mod)[2] + coef(f.mod)[4] * x2.sim
 freq.c.eff.sd <- sqrt(vcov(f.mod)[2,2] + x2.sim^2 * vcov(f.mod)[4,4] + 2 * x2.sim * vcov(f.mod)[2,4])
 
 ## Combine both estimates
-plot.dat <- data.frame(x2.sim, bayes.c.eff.mean, bayes.c.eff.sd, freq.c.eff.pe, freq.c.eff.sd)
+plot.dat <- data.frame(x2.sim, bayes.c.eff.mean, bayes.c.eff.lower, bayes.c.eff.upper, freq.c.eff.pe, freq.c.eff.sd)
 
 ## Compare
 plot.dat
 cor(plot.dat$bayes.c.eff.mean, plot.dat$freq.c.eff.pe)
-cor(plot.dat$bayes.c.eff.sd, plot.dat$freq.c.eff.sd)
 
 ## Plot both estimates
 
@@ -92,8 +93,8 @@ library(ggplot2)
 
 ## Use blue for Bayesian, red for frequentist estimates. Transparency to allow overlay; purple indicates complete overlay.
 p <- ggplot(plot.dat, aes(x = x2.sim, y = bayes.c.eff.mean)) + geom_line(color = "blue", alpha = 0.8, size = 2)
-p <- p + geom_ribbon(aes(ymin = bayes.c.eff.mean - 1.96 * bayes.c.eff.sd, ymax= bayes.c.eff.mean + 1.96 * bayes.c.eff.sd), fill = "blue", alpha = 0.2)
-p <- p + geom_line(aes(x = x2.sim, y = bayes.c.eff.mean - 1.96 * bayes.c.eff.sd), color = "blue", alpha = 0.8, size = 2) + geom_line(aes(x = x2.sim, y = bayes.c.eff.mean + 1.96 * bayes.c.eff.sd), color = "blue", alpha = 0.8, size = 2)
+p <- p + geom_ribbon(aes(ymin = bayes.c.eff.lower, ymax= bayes.c.eff.upper), fill = "blue", alpha = 0.2)
+p <- p + geom_line(aes(x = x2.sim, y = bayes.c.eff.lower), color = "blue", alpha = 0.8, size = 2) + geom_line(aes(x = x2.sim, y = bayes.c.eff.upper), color = "blue", alpha = 0.8, size = 2)
 p <- p + geom_line(aes(x = x2.sim, y = freq.c.eff.pe), color = "red", alpha = 0.5, size = 2)
 p <- p + geom_ribbon(aes(ymin = freq.c.eff.pe - 1.96 * freq.c.eff.sd, ymax= freq.c.eff.pe + 1.96 * freq.c.eff.sd), fill = "red", alpha = 0.1)
 p <- p + geom_line(aes(x = x2.sim, y = freq.c.eff.pe - 1.96 * freq.c.eff.sd), color = "red", alpha = 0.5, size = 2) + geom_line(aes(x = x2.sim, y = freq.c.eff.pe + 1.96 * freq.c.eff.sd), color = "red", alpha = 0.5, size = 2)
