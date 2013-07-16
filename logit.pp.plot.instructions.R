@@ -48,7 +48,7 @@ p.mean <- apply(p, 2, mean)
 
 ## Plot predicted probability (of y=1) against *observed* values of age \
 ## (most likely an ugly plot, b/c we have several y(x_i))
-plot(p.mean ~ turnout.dat.dat$age, xlim = c(min(turnout.dat.dat$age), max(turnout.dat.dat$age)))
+plot(p.mean ~ turnout.dat$age, xlim = c(min(turnout.dat$age), max(turnout.dat$age)))
 
 #################################################################
 ######### SECOND, OUT-OF-SAMPLE PREDICTED PROBABILITIES, ########
