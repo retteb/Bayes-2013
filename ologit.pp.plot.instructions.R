@@ -53,7 +53,7 @@ hw5.mod <- function() {
 hw5.params <- c("b1", "b2", "b3", "b4", "p", "theta")
 
 hw5.inits1 <- function(){
-  list("b1"=c(0), "b2"=c(0), "b3"=c(0), "b4"=c(0), "theta"=c(0,10,13))	## Note that we're giving inits to theta, not theta1
+  list("b1"=c(0), "b2"=c(0), "b3"=c(0), "b4"=c(0), "theta"=c(0,10,13))  ## Note that we're giving inits to theta, not theta1
 }
 
 hw5.fit <- jags(data=hw5.dat.jags, inits=hw5.inits1, hw5.params, n.chains=2, n.iter=1000, n.burnin=500, model.file= hw5.mod)
@@ -63,8 +63,8 @@ hw5.fit$BUGSoutput$summary[1:5, ]
 
 ## JAGS/BUGS USERS: Read the coda output from Bugs or Jags into R
 chains <- rbind(read.coda("ologit_chain1.txt", "ologit_index.txt"), 
-	read.coda("ologit_chain2.txt", "ologit_index.txt"))
-	
+                read.coda("ologit_chain2.txt", "ologit_index.txt"))
+
 ## Or: R2JAGS/R2WINBUGS USERS, if hw5.fit is your R2jags/R2WinBUGS object:
 chains <- as.mcmc(hw5.fit)
 chains <- as.matrix(chains)
@@ -75,7 +75,7 @@ chains <- as.data.frame(chains)
 ## b2: indmembs
 ## b3: age
 ## b4: taxexmpt
-	
+
 #####################################################
 ## FIRST, PREDICTED PROBABILITIES ON OBSERVED DATA ##
 #####################################################
@@ -132,23 +132,27 @@ pre(freq.ologit)
 
 ## Generate dataset with simulated data (i.e. where your explanatory variables are set to min->max or held constant)
 newdat <- data.frame(
-	age = seq(min(hw5.dat$age), max(hw5.dat$age), length=145),	## length: number of individual values of this continuous expl. var.
-	orgmembs = median(hw5.dat$orgmembs),
-	indmembs = median(hw5.dat$indmembs),
-	taxexmpt = median(hw5.dat$taxexmpt)
+  age = seq(min(hw5.dat$age), max(hw5.dat$age), length = max(hw5.dat$age) - min(hw5.dat$age) + 1),	## length: number of individual values of this continuous expl. var.
+  orgmembs = median(hw5.dat$orgmembs),
+  indmembs = median(hw5.dat$indmembs),
+  taxexmpt = median(hw5.dat$taxexmpt)
 )
 
-## Define vectors with the values of the coefficients (pulled from the coda files)
+## Define matrices with the values of the coefficients (pulled from the coda files)
 ## in this case, note that all my coefficients were named b[j], where j = number of coefficients
 b <- chains[,grep("b", colnames(chains), fixed=T)]	
+
+## In the MNL, you would define as many coefficient matrices as you have categories, minus the base category.
+## Then you can simply proceed by calculating predicted probabilities for each category
 
 ## Define X matrix (explanatory variables)
 ## Important: The order of predictors must match the order in your model code!
 X <- model.matrix(~orgmembs + indmembs + age + taxexmpt, data=newdat)
+## Remove the intercept for ordered logit
+## (You would keep it for MNL)
 X <- X[,-1]
 
 ## Multiply X by the betas from your JAGS/BUGS output
-
 Xb <- t(X %*% t(b))
 
 ## Define vectors with the values of the cutoff points (pulled from the coda files)
