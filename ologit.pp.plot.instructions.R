@@ -143,6 +143,7 @@ newdat <- data.frame(
 b <- chains[,grep("b", colnames(chains), fixed=T)]	
 
 ## Define X matrix (explanatory variables)
+## Important: The order of predictors must match the order in your model code!
 X <- model.matrix(~orgmembs + indmembs + age + taxexmpt, data=newdat)
 X <- X[,-1]
 
