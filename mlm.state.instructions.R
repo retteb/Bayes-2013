@@ -100,7 +100,7 @@ state.inits <- function (){
   b.age=c(0), b.edu=c(0), b.state0=rnorm(n.state), b.v.prev=c(0))
 }
 
-state.fit <- jags(data=state.dat, inits=state.inits, state.params, model.file="state.mod", n.chains=2, n.iter=100, n.burnin=10)
+state.fit <- jags(data=state.dat, inits=state.inits, state.params, model.file=state.mod, n.chains=2, n.iter=100, n.burnin=10)
 
 ### Here, in nested structures, the plot() command in R2Jags comes in handy
 plot(state.fit)
