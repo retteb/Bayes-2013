@@ -60,27 +60,4 @@ econvote.model.jags <- function()  {
 
 econ.params <- c("b")
 
-econ.inits <- list(b = structure(.Data = c(
-            NA,2.814591768050622,2.672802250229753,-5.708160780551808,            
-            NA,-2.103556728095819,-0.02465655691760306,-1.112744901881126,            
-            NA,-5.534073839338205,0.377378254003351,-0.4298896403932389,            
-            NA,2.397701213045189,3.25663165065113,2.910457003304038,            
-            NA,-5.411360350420177,1.827996299302545,-2.788501794152787,
-            NA,2.438577159694778,1.268176634066079,-0.1112438180561168,            
-            NA,-2.744934104329091,3.729902592818073,1.696162903833417,            
-            NA,1.624966201308485,2.559685176740751,-0.5726405182073309),
-    .Dim = c(8,4)))
-    
-## To generate your own starting values from a MNL model, try:
-library(mlogit)
-econ.voting.dat$yfac <- as.factor(econ.voting.dat$y)
-mnl.dat <- mlogit.data(econ.voting.dat, varying=NULL, choice="yfac", shape="wide")
-mlogit.mod <- mlogit(yfac ~ 1|econwor + econbet + age + income + rural + gender + leftrt, data=mnl.dat, reflevel="1")
-coefs <- as.vector(summary(mlogit.mod)$coefficients)
-coefs.mat <- matrix(coefs, byrow=TRUE, 8,3)
-NAs <- matrix(c(NA, NA, NA, NA, NA, NA, NA, NA), 8, 1)
-inits.mat <- cbind(NAs, coefs.mat)
-inits <- list(b=inits.mat)
-econ.inits <- list(inits, inits)
-
-econvote.fit <- jags(data=econvote.dat, inits=econ.inits, econ.params, n.chains=2, n.iter=10, n.burnin=1, model.file=econvote.model.jags)
+econvote.fit <- jags(data=econvote.dat, inits=NULL, econ.params, n.chains=2, n.iter=10, n.burnin=1, model.file=econvote.model.jags)
