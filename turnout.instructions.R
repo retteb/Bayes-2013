@@ -21,7 +21,7 @@ setwd("~/R/Bayes/turnout")
 bugs2jags("turnout.bugs.txt", "turnout.jags.txt")
 
 ## Alternatively, read in the data from the web: 
-source("http://spot.colorado.edu/~joka5204/Bayes/turnout.dat.jags")
+source("http://spot.colorado.edu/~joka5204/files/turnout.dat.jags")
 
 ## Then create a list of these elements:
 
