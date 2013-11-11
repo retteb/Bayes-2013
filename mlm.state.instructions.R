@@ -47,7 +47,7 @@ library(foreign)
 
 ## Option A) Use complete dataset including level-2 predictor
 
-polls.subset <- read.dta ("polls.subset.merged.dta")
+polls.subset <- read.dta("polls.subset.merged.dta")
 
 y <- polls.subset$bush
 female <- polls.subset$female
@@ -65,7 +65,7 @@ v.prev <- as.vector(by(polls.subset$g76_84pr, polls.subset$stateid, mean))
 
 ## Option B) Combine level-1 and level-2 dataset in R
 
-polls.subset <- read.dta ("polls.subset.JK.dta")
+polls.subset <- read.dta("polls.subset.JK.dta")
 
 # Load in level-1 data
 
@@ -79,12 +79,12 @@ state <- polls.subset$state
 # Load in level-2 data. Note that these data should be ordered by state,
 # so you will NOT need a level-2 ID
 
-presvote <- read.dta ("presvote.dta")
+presvote <- read.dta("presvote.dta")
 v.prev  <- presvote$g76_84pr
 
-### Data are done
+### Data are ready
 
-### Define data summaries
+### Define number of observations on each level
 
 n <- length(y)             # of survey respondents
 n.state <- max(state)      # of states
@@ -96,8 +96,8 @@ state.dat <- list ("n", "n.state", "y", "female", "black", "age", "edu", "state"
 state.params <- c ("b.female", "b.black", "b.age", "b.edu", "b.state.hat",  "b.v.prev")
 
 state.inits <- function (){
- list(b.0=c(0), b.female=c(0), b.black=c(0), 
-  b.age=c(0), b.edu=c(0), b.state0=rnorm(n.state), b.v.prev=c(0))
+ list(b.0 = c(0), b.female = c(0), b.black = c(0), 
+  b.age = c(0), b.edu = c(0), b.state = rnorm(n.state), b.v.prev = c(0))
 }
 
 state.fit <- jags(data=state.dat, inits=state.inits, state.params, model.file=state.mod, n.chains=2, n.iter=100, n.burnin=10)
