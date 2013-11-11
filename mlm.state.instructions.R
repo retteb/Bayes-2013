@@ -96,7 +96,7 @@ state.dat <- list ("n", "n.state", "y", "female", "black", "age", "edu", "state"
 state.params <- c ("b.female", "b.black", "b.age", "b.edu", "b.state.hat",  "b.v.prev")
 
 state.inits <- function (){
- list(b.0 = c(0), b.female = c(0), b.black = c(0), 
+ list(b.female = c(0), b.black = c(0), 
   b.age = c(0), b.edu = c(0), b.state = rnorm(n.state), b.v.prev = c(0))
 }
 
